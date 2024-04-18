@@ -1,5 +1,5 @@
-import { CreateProductDto } from "./create-product.dto";
+import { CreatePurchasedProductDto } from "./create-purchased-product.dto";
 
 export class CreateOrderDto {
-    products: CreateProductDto[]
+    products: CreatePurchasedProductDto[]
 }

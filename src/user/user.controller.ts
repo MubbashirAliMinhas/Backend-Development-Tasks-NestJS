@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.gaurd';
 import { CreateOrderDto } from './dtos/create-order.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('user')
 export class UserController {
@@ -36,6 +37,7 @@ export class UserController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @UseInterceptors(CacheInterceptor)
     @Get('order')
     async getOrder(@Request() req) {
         return await this.userService.getOrder(req.user.id)

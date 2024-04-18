@@ -9,6 +9,7 @@ import { User } from './TypeORM/entities/user.entity';
 import { Order } from './TypeORM/entities/order.entity';
 import { PurchasedProduct } from './TypeORM/entities/purchased-product.entity';
 import { AuthModule } from './auth/auth.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     ProductModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
