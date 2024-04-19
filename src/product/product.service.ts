@@ -1,6 +1,6 @@
 import { HttpException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/TypeORM/entities/product.entity';
+import { Product } from '../TypeORM/entities/product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductType } from './types/create-product.type';
 import { UpdateProductType } from './types/update-product.type';
