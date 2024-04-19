@@ -1,14 +1,14 @@
 import { BadRequestException, Body, Controller, Get, Post, Request, UseGuards, UseInterceptors, ValidationError, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.gaurd';
+import { LocalAuthGuard } from '../auth/local-auth.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.gaurd';
 import { CreateOrderDto } from './dtos/create-order.dto';
 import { CacheInterceptor } from '@nestjs/cache-manager';
-import { ApiBearerAuth, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { NestedBody } from 'src/utils/nested-body.decorator';
-import { Order } from 'src/TypeORM/entities/order.entity';
-import { User } from 'src/TypeORM/entities/user.entity';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { NestedBody } from '../utils/nested-body.decorator';
+import { Order } from '../TypeORM/entities/order.entity';
+import { User } from '../TypeORM/entities/user.entity';
 
 @ApiTags('User')
 @Controller('user')
@@ -46,10 +46,13 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get('profile')
     async getProfile(@Request() req) {
-        return await this.userService.getUser(req.user.id)
+        return await this.userService.getUser(req.user.id as number)
     }
 
     @ApiBearerAuth()
+    @ApiBody({
+        type: CreateOrderDto
+    })
     @ApiResponse({
         status: 200,
         description: 'Newly created order is returned.',
@@ -66,7 +69,7 @@ export class UserController {
     @Post('order')
     async createOrder(@Request() req, @NestedBody() createOrderDto: CreateOrderDto) {
         const order = {
-            userId: req.user.id as number,
+            userId: req.user.id,
             ...createOrderDto
         }
         return await this.userService.createOrder(order)

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsEmail, IsNotEmpty, IsString, Matches, ValidateIf } from "class-validator"
-import { MatchField } from "src/validators/match-field.validator"
+import { MatchField } from "../../validators/match-field.validator"
 
 export class CreateUserDto {
     @ApiProperty({

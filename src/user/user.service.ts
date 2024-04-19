@@ -1,12 +1,12 @@
 import { Get, HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/TypeORM/entities/user.entity';
+import { User } from '../TypeORM/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserType } from './types/create-user.type';
 import * as bcrypt from 'bcrypt'
 import { CreateOrderType } from './types/create-order.type';
-import { ProductService } from 'src/product/product.service';
-import { Order } from 'src/TypeORM/entities/order.entity';
+import { ProductService } from '../product/product.service';
+import { Order } from '../TypeORM/entities/order.entity';
 
 @Injectable()
 export class UserService {

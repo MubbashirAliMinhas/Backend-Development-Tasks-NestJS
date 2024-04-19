@@ -13,6 +13,13 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number
 
+    @ApiProperty({
+        description: 'Id of user.',
+        type: () => User,
+        example: {
+            id: 2
+        }
+    })
     @ManyToOne(() => User, user => user.orders)
     user: User
 
