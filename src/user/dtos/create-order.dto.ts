@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { CreatePurchasedProductDto } from "./create-purchased-product.dto";
 import { Type } from "class-transformer";
-import { ValidateNested } from "class-validator";
+import { IsArray, ValidateNested } from "class-validator";
 
 export class CreateOrderDto {
 
@@ -21,5 +21,8 @@ export class CreateOrderDto {
     })
     @ValidateNested({ each: true })
     @Type(() => CreatePurchasedProductDto)
+    @IsArray({
+        message: 'Please input product array.'
+    })
     products: CreatePurchasedProductDto[]
 }

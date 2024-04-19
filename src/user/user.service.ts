@@ -1,4 +1,4 @@
-import { Get, HttpException, Injectable } from '@nestjs/common';
+import { Get, HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/TypeORM/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -10,6 +10,8 @@ import { Order } from 'src/TypeORM/entities/order.entity';
 
 @Injectable()
 export class UserService {
+    private logger = new Logger(UserService.name)
+
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
         @InjectRepository(Order) private orderRepository: Repository<Order>,
@@ -24,11 +26,14 @@ export class UserService {
         })
 
         if (existUser) {
+            this.logger.warn('User already exist.')
             throw new HttpException('User already exist with that email', 400)
         }
 
         user.password = await bcrypt.hash(user.password, 10)
         const newUser = this.userRepository.create(user)
+
+        this.logger.log('Creating a new user.')
         return await this.userRepository.save(newUser)
     }
 
@@ -38,10 +43,12 @@ export class UserService {
                 email
             }
         })
+        this.logger.log('Getting a user using email.')
         return user
     }
 
     async getUser(id: number) {
+        this.logger.log('Getting a user using id.')
         return await this.userRepository.findOne({
             where: {
                 id
@@ -68,10 +75,12 @@ export class UserService {
             totalPrice
         })
 
+        this.logger.log('Creating an order for the user.')
         return await this.orderRepository.save(createOrder)
     }
     
     async getOrder(userId: number) {
+        this.logger.log('Getting all the orders of the user.')
         return await this.orderRepository.find({
             where: {
                 user: {

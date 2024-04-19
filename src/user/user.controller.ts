@@ -64,7 +64,7 @@ export class UserController {
     })
     @UseGuards(JwtAuthGuard)
     @Post('order')
-    async createOrder(@Request() req, @Body() createOrderDto: CreateOrderDto) {
+    async createOrder(@Request() req, @NestedBody() createOrderDto: CreateOrderDto) {
         const order = {
             userId: req.user.id as number,
             ...createOrderDto
