@@ -10,6 +10,7 @@ import { Order } from './TypeORM/entities/order.entity';
 import { PurchasedProduct } from './TypeORM/entities/purchased-product.entity';
 import { AuthModule } from './auth/auth.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { ChatGateway } from './chat/chat.gateway';
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { CacheModule } from '@nestjs/cache-manager';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ChatGateway],
 })
 export class AppModule {}

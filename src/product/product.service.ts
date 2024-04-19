@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from 'src/TypeORM/entities/product.entity';
 import { Repository } from 'typeorm';
@@ -19,7 +19,11 @@ export class ProductService {
     }
 
     async getProduct(id: number) {
-        return await this.productRepository.findOne({where: {id}})
+        const product = await this.productRepository.findOne({where: {id}})
+        if (!product) {
+            throw new NotFoundException(`Product with id: ${id} does not exist.`)
+        }
+        return product
     }
 
     async getProducts() {
@@ -27,18 +31,30 @@ export class ProductService {
     }
 
     async updateProduct(id: number, product: UpdateProductType) {
-        return await this.productRepository.update({id}, product)
+        const updatedProduct = await this.productRepository.update({id}, product)
+        if (!updatedProduct) {
+            throw new NotFoundException(`Product with id: ${id} does not exist.`)
+        }
+        return updatedProduct
     }
 
     async updateQuantity(id: number, quantity: number) {
-        return await this.productRepository.update(
+        const product = await this.productRepository.update(
             { id },
             { quantity }
         )
+        if (!product) {
+            throw new NotFoundException(`Product with id: ${id} does not exist.`)
+        }
+        return product
     }
 
     async deleteProduct(id: number) {
-        return await this.productRepository.delete({id})
+        const product = await this.productRepository.delete({id})
+        if (!product) {
+            throw new NotFoundException(`Product with id: ${id} does not exist.`)
+        }
+        return product
     }
 
     async reduceQuantities(productQuantities: QuantityProductType[]) {
@@ -50,6 +66,11 @@ export class ProductService {
         const products = await this.productRepository.find({
             where: productIds
         })
+
+        if (!products) {
+            throw new NotFoundException(`Product with the ids do not exist.`)
+        }
+        return products
 
         for (let i = 0; i < products.length; i++) {
             let quantity = productQuantities[i].quantity
