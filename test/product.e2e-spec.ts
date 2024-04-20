@@ -5,7 +5,7 @@ import { ProductModule } from '../src/product/product.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Product } from '../src/TypeORM/entities/product.entity';
 
-describe('AppController (e2e)', () => {
+describe('ProductController (e2e)', () => {
   let app: INestApplication;
   let mockProductRepository = {}
 

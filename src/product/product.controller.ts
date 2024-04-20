@@ -94,7 +94,7 @@ export class ProductController {
         status: 400,
         description: 'When incorrect product details are entered.'
     })
-    @Patch(':id')
+    @Patch('quantity/:id')
     async updateQuantity(@Param('id', ParseIntPipe) id: number, @Body() updateQuantityDto: UpdateQuantityDto) {
         return await this.productService.updateQuantity(id, updateQuantityDto.quantity)
     }

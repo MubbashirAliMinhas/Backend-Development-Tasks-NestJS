@@ -5,7 +5,7 @@ import { MatchField } from "../../validators/match-field.validator"
 export class CreateUserDto {
     @ApiProperty({
         description: 'Name of user.',
-        example: 'John',
+        example: 'Sakuta',
         type: String
     })
     @IsString()
@@ -14,7 +14,7 @@ export class CreateUserDto {
 
     @ApiProperty({
         description: 'Email of user.',
-        example: 'john@gmail.com',
+        example: 'sakuta@gmail.com',
         type: String
     })
     @IsEmail()
@@ -22,7 +22,7 @@ export class CreateUserDto {
 
     @ApiProperty({
         description: 'Password of user.',
-        example: 'test123',
+        example: 'sakuta123',
         type: String
     })
     @IsString()

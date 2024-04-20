@@ -1,14 +1,14 @@
-import { BadRequestException, Body, Controller, Get, Post, Request, UseGuards, UseInterceptors, ValidationError, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.gaurd';
 import { CreateOrderDto } from './dtos/create-order.dto';
 import { CacheInterceptor } from '@nestjs/cache-manager';
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { NestedBody } from '../utils/nested-body.decorator';
 import { Order } from '../TypeORM/entities/order.entity';
-import { User } from '../TypeORM/entities/user.entity';
+import { UserPasswordInterceptor } from './user-password.interceptor';
+import { UserResponseModel } from './models/user-res.model';
 
 @ApiTags('User')
 @Controller('user')
@@ -22,12 +22,13 @@ export class UserController {
     @ApiResponse({
         status: 200,
         description: 'Newly created user is returned.',
-        type: User
+        type: UserResponseModel
     })
     @ApiResponse({
         status: 400,
         description: 'When wrong user details are entered. Also when user already exist.'
     })
+    @UseInterceptors(UserPasswordInterceptor)
     @Post()
     async createUser(@Body() createUserDto: CreateUserDto) {
         const {confirmPassword, ...user} = createUserDto
@@ -38,12 +39,13 @@ export class UserController {
     @ApiResponse({
         status: 200,
         description: 'User details is returned as response.',
-        type: User
+        type: UserResponseModel
     })
     @ApiUnauthorizedResponse({
         description: 'User is unauthorized.'
     })
     @UseGuards(JwtAuthGuard)
+    @UseInterceptors(UserPasswordInterceptor)
     @Get('profile')
     async getProfile(@Request() req) {
         return await this.userService.getUser(req.user.id as number)
@@ -65,6 +67,7 @@ export class UserController {
     @ApiUnauthorizedResponse({
         description: 'User is unauthorized.'
     })
+    @UsePipes(ValidationPipe)
     @UseGuards(JwtAuthGuard)
     @Post('order')
     async createOrder(@Request() req, @NestedBody() createOrderDto: CreateOrderDto) {

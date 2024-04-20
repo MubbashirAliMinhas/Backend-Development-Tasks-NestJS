@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { UserResponseModel } from './user/models/user-res.model';
+import { LoginUserDto } from './user/dtos/login-user.dto';
 
 @ApiTags('Auth Login')
 @Controller()
@@ -12,10 +14,25 @@ export class AppController {
     private authService: AuthService
   ) {}
 
+  @ApiBody({
+    type: LoginUserDto
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'When a user successfully logs in with the correct credentials.',
+    type: UserResponseModel
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'When user does not exist with the entered email.'
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'When validation fails or when incorrect password is entered.'
+  })
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    console.log(req.user)
     return this.authService.login(req.user);
   }
 }

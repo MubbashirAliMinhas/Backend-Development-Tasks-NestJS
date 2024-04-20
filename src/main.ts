@@ -26,7 +26,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Ecommerce Test API using NestJS')
-    .setDescription('This is the description.')
+    .setDescription('In this application users can create accounts, purchase available products and create and view their orders.')
     .setVersion('1.0')
     .addBearerAuth()
     .build()
