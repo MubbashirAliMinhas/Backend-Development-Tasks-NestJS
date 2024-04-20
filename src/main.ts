@@ -22,8 +22,6 @@ async function bootstrap() {
     }
   }))
 
-  
-
   const config = new DocumentBuilder()
     .setTitle('Ecommerce Test API using NestJS')
     .setDescription('In this application users can create accounts, purchase available products and create and view their orders.')

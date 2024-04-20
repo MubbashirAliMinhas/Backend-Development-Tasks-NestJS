@@ -45,7 +45,7 @@ export class UserController {
         description: 'User is unauthorized.'
     })
     @UseGuards(JwtAuthGuard)
-    @UseInterceptors(UserPasswordInterceptor)
+    @UseInterceptors(CacheInterceptor, UserPasswordInterceptor)
     @Get('profile')
     async getProfile(@Request() req) {
         return await this.userService.getUser(req.user.id as number)

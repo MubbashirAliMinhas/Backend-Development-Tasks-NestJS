@@ -27,7 +27,8 @@ describe('ProductController (e2e)', () => {
 
   it('/api/product (GET)', () => {
     return request(app.getHttpServer())
-      .get('/api/product')
+      .get('/api/product/1')
       .expect(200)
+      .expect(product)
   });
 });
