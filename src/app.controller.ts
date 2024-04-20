@@ -3,8 +3,8 @@ import { AppService } from './app.service';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserResponseModel } from './user/models/user-res.model';
 import { LoginUserDto } from './user/dtos/login-user.dto';
+import { TokenResponseModel } from './auth/models/token.model';
 
 @ApiTags('Auth Login')
 @Controller()
@@ -20,7 +20,7 @@ export class AppController {
   @ApiResponse({
     status: 200,
     description: 'When a user successfully logs in with the correct credentials.',
-    type: UserResponseModel
+    type: TokenResponseModel
   })
   @ApiResponse({
     status: 404,
