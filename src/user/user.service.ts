@@ -57,14 +57,15 @@ export class UserService {
     }
 
     async createOrder(order: CreateOrderType) {
-        const purchasedProducts = (await this.productService.reduceQuantities(order.products)).map(product => {
+        const purchasedProducts = (await this.productService.reduceQuantities(order.products)).map((product, index) => {
             const { id, ...purchasedProduct } = product
+            purchasedProduct.quantity = order.products[index].quantity
             return purchasedProduct
         })
 
         let totalPrice = 0
         for (let i = 0; i < purchasedProducts.length; i++) {
-            totalPrice += purchasedProducts[i].price * order.products[i].quantity
+            totalPrice += purchasedProducts[i].price * purchasedProducts[i].quantity
         }
 
         const createOrder = this.orderRepository.create({
